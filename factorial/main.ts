@@ -1,6 +1,6 @@
-import {PlatformRef} from '@angular/core';
-import {UiArguments, FnArg, PRIMITIVE, ClientMessageBrokerFactory} from '@angular/platform-webworker';
-import {bootstrapWorkerUi} from "@angular/platform-webworker";
+import { PlatformRef } from '@angular/core';
+import { UiArguments, FnArg, PRIMITIVE, ClientMessageBrokerFactory } from '@angular/platform-webworker';
+import { bootstrapWorkerUi } from "@angular/platform-webworker";
 
 const FACTORIAL_CHANNEL = "FACTORIAL";
 
@@ -25,4 +25,4 @@ bootstrapWorkerUi("factorial/loader.js")
           document.getElementById("result").innerHTML = `<span>${res}</span>`;
         });
     });
-});
+  });

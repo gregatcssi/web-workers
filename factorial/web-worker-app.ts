@@ -1,45 +1,55 @@
-import {Component} from '@angular/core';
+import { Component, getPlatform } from '@angular/core';
+import { WorkerService } from './worker-service.js';
+import { NgModule } from '@angular/core';
+import { WorkerAppModule } from '@angular/platform-webworker';
+import { platformWorkerAppDynamic } from '@angular/platform-webworker-dynamic';
 
-const FACTORIAL_CHANNEL = "FACTORIAL";
+// const FACTORIAL_CHANNEL = "FACTORIAL";
 
-import {NgModule} from '@angular/core';
-import {WorkerAppModule} from '@angular/platform-webworker';
-import {platformWorkerAppDynamic} from '@angular/platform-webworker-dynamic';
-import {ServiceMessageBrokerFactory, PRIMITIVE} from '@angular/platform-webworker';
+// import { UiArguments, FnArg, PRIMITIVE, ClientMessageBrokerFactory, ClientMessageBroker } from '@angular/platform-webworker';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app',
-  template:'<div>Web worker loaded</div>'
+  //templateUrl: './web-worker-app.html',
+  template: '<div>loaded</div>'
 })
 class Worker {
-  time: string;
-  constructor(private _serviceBrokerFactory: ServiceMessageBrokerFactory){
+  // res: number;
+  // val: number = 100;
+  // broker: ClientMessageBroker;
+  // brokerFactory: ClientMessageBrokerFactory;
 
-    var broker = _serviceBrokerFactory.createMessageBroker(FACTORIAL_CHANNEL, false);
-    broker.registerMethod("factorial", [PRIMITIVE], this.calculate, PRIMITIVE);
-  }
 
-  private calculate(val: string) {
-    if(val) {
-      let result = factorial(parseInt(val));
-      return Promise.resolve(result);
-    }
-    return Promise.resolve('');
+  constructor(private _workerService: WorkerService) {
+    // var ref = getPlatform();
+    // this.brokerFactory = ref.injector.get("ClientMessageBrokerFactory");
+    // this.broker = this.brokerFactory.createMessageBroker(FACTORIAL_CHANNEL, false);
   }
+  // calculate_factorial($event) {
+  //   var args = new UiArguments("factorial");
+  //   args.method = "factorial2";
+  //   var fnArg = new FnArg(this.val, PRIMITIVE);
+  //   fnArg.value = this.val;
+  //   fnArg.type = PRIMITIVE;
+  //   args.args = [fnArg];
+
+  //   this.broker.runOnService(args, PRIMITIVE)
+  //     .then((res: string) => {
+  //       var val = Number.parseInt(res);
+  //       this.res = val;
+  //     });
+
+  // }
 }
 
-@NgModule({imports: [WorkerAppModule], bootstrap: [Worker], declarations: [Worker]})
+@NgModule({
+  imports: [WorkerAppModule, FormsModule],
+  bootstrap: [Worker],
+  declarations: [Worker],
+  providers: [WorkerService]
+})
 class WorkerModule {
 }
 
 platformWorkerAppDynamic().bootstrapModule(WorkerModule);
-
-function factorial(num) {
-
-  if (num === 0) {
-    return 1;
-  }
-  else {
-    return (num * factorial(num - 1));
-  }
-}

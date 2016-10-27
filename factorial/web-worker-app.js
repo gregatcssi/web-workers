@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/platform-webworker', '@angular/platform-webworker-dynamic'], function(exports_1, context_1) {
+System.register(['@angular/core', './worker-service.js', '@angular/platform-webworker', '@angular/platform-webworker-dynamic', '@angular/forms'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,50 +10,45 @@ System.register(['@angular/core', '@angular/platform-webworker', '@angular/platf
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, core_2, platform_webworker_1, platform_webworker_dynamic_1, platform_webworker_2;
-    var FACTORIAL_CHANNEL, Worker, WorkerModule;
-    function factorial(num) {
-        if (num === 0) {
-            return 1;
-        }
-        else {
-            return (num * factorial(num - 1));
-        }
-    }
+    var core_1, worker_service_js_1, core_2, platform_webworker_1, platform_webworker_dynamic_1, forms_1;
+    var Worker, WorkerModule;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
                 core_2 = core_1_1;
             },
+            function (worker_service_js_1_1) {
+                worker_service_js_1 = worker_service_js_1_1;
+            },
             function (platform_webworker_1_1) {
                 platform_webworker_1 = platform_webworker_1_1;
-                platform_webworker_2 = platform_webworker_1_1;
             },
             function (platform_webworker_dynamic_1_1) {
                 platform_webworker_dynamic_1 = platform_webworker_dynamic_1_1;
+            },
+            function (forms_1_1) {
+                forms_1 = forms_1_1;
             }],
         execute: function() {
-            FACTORIAL_CHANNEL = "FACTORIAL";
             Worker = (function () {
-                function Worker(_serviceBrokerFactory) {
-                    this._serviceBrokerFactory = _serviceBrokerFactory;
-                    var broker = _serviceBrokerFactory.createMessageBroker(FACTORIAL_CHANNEL, false);
-                    broker.registerMethod("factorial", [platform_webworker_2.PRIMITIVE], this.calculate, platform_webworker_2.PRIMITIVE);
+                // res: number;
+                // val: number = 100;
+                // broker: ClientMessageBroker;
+                // brokerFactory: ClientMessageBrokerFactory;
+                function Worker(_workerService) {
+                    this._workerService = _workerService;
+                    // var ref = getPlatform();
+                    // this.brokerFactory = ref.injector.get("ClientMessageBrokerFactory");
+                    // this.broker = this.brokerFactory.createMessageBroker(FACTORIAL_CHANNEL, false);
                 }
-                Worker.prototype.calculate = function (val) {
-                    if (val) {
-                        var result = factorial(parseInt(val));
-                        return Promise.resolve(result);
-                    }
-                    return Promise.resolve('');
-                };
                 Worker = __decorate([
                     core_1.Component({
                         selector: 'app',
-                        template: '<div>Web worker loaded</div>'
+                        //templateUrl: './web-worker-app.html',
+                        template: '<div>loaded</div>'
                     }), 
-                    __metadata('design:paramtypes', [platform_webworker_2.ServiceMessageBrokerFactory])
+                    __metadata('design:paramtypes', [worker_service_js_1.WorkerService])
                 ], Worker);
                 return Worker;
             }());
@@ -61,7 +56,12 @@ System.register(['@angular/core', '@angular/platform-webworker', '@angular/platf
                 function WorkerModule() {
                 }
                 WorkerModule = __decorate([
-                    core_2.NgModule({ imports: [platform_webworker_1.WorkerAppModule], bootstrap: [Worker], declarations: [Worker] }), 
+                    core_2.NgModule({
+                        imports: [platform_webworker_1.WorkerAppModule, forms_1.FormsModule],
+                        bootstrap: [Worker],
+                        declarations: [Worker],
+                        providers: [worker_service_js_1.WorkerService]
+                    }), 
                     __metadata('design:paramtypes', [])
                 ], WorkerModule);
                 return WorkerModule;
