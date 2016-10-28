@@ -1,48 +1,31 @@
-import { Component, getPlatform } from '@angular/core';
+import { Component } from '@angular/core';
 import { WorkerService } from './worker-service.js';
 import { NgModule } from '@angular/core';
 import { WorkerAppModule } from '@angular/platform-webworker';
 import { platformWorkerAppDynamic } from '@angular/platform-webworker-dynamic';
 
-// const FACTORIAL_CHANNEL = "FACTORIAL";
+const FACTORIAL_CHANNEL = "FACTORIAL";
 
-// import { UiArguments, FnArg, PRIMITIVE, ClientMessageBrokerFactory, ClientMessageBroker } from '@angular/platform-webworker';
+import { UiArguments, FnArg, PRIMITIVE, ClientMessageBrokerFactory, ClientMessageBroker } from '@angular/platform-webworker';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app',
-  //templateUrl: './web-worker-app.html',
-  template: '<div>loaded</div>'
+  templateUrl: './web-worker-app.html'
 })
 class Worker {
-  // res: number;
-  // val: number = 100;
-  // broker: ClientMessageBroker;
-  // brokerFactory: ClientMessageBrokerFactory;
-
-
-  constructor(private _workerService: WorkerService) {
-    // var ref = getPlatform();
-    // this.brokerFactory = ref.injector.get("ClientMessageBrokerFactory");
-    // this.broker = this.brokerFactory.createMessageBroker(FACTORIAL_CHANNEL, false);
+  res: number;
+  val: number = 100;
+  constructor(private _workerService: WorkerService) { }
+  calculate_factorial($event) {
+    var resol = this._workerService.calculate(this.val.toString());
+    resol.then((ret) => { this.res = ret });
   }
-  // calculate_factorial($event) {
-  //   var args = new UiArguments("factorial");
-  //   args.method = "factorial2";
-  //   var fnArg = new FnArg(this.val, PRIMITIVE);
-  //   fnArg.value = this.val;
-  //   fnArg.type = PRIMITIVE;
-  //   args.args = [fnArg];
-
-  //   this.broker.runOnService(args, PRIMITIVE)
-  //     .then((res: string) => {
-  //       var val = Number.parseInt(res);
-  //       this.res = val;
-  //     });
-
-  // }
+  calculate_factorial2($event) {
+    var resol = this._workerService.calculate2(this.val.toString());
+    resol.then((ret) => { this.res = ret });
+  }
 }
-
 @NgModule({
   imports: [WorkerAppModule, FormsModule],
   bootstrap: [Worker],

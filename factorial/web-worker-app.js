@@ -11,7 +11,7 @@ System.register(['@angular/core', './worker-service.js', '@angular/platform-webw
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, worker_service_js_1, core_2, platform_webworker_1, platform_webworker_dynamic_1, forms_1;
-    var Worker, WorkerModule;
+    var FACTORIAL_CHANNEL, Worker, WorkerModule;
     return {
         setters:[
             function (core_1_1) {
@@ -31,22 +31,26 @@ System.register(['@angular/core', './worker-service.js', '@angular/platform-webw
                 forms_1 = forms_1_1;
             }],
         execute: function() {
+            FACTORIAL_CHANNEL = "FACTORIAL";
             Worker = (function () {
-                // res: number;
-                // val: number = 100;
-                // broker: ClientMessageBroker;
-                // brokerFactory: ClientMessageBrokerFactory;
                 function Worker(_workerService) {
                     this._workerService = _workerService;
-                    // var ref = getPlatform();
-                    // this.brokerFactory = ref.injector.get("ClientMessageBrokerFactory");
-                    // this.broker = this.brokerFactory.createMessageBroker(FACTORIAL_CHANNEL, false);
+                    this.val = 100;
                 }
+                Worker.prototype.calculate_factorial = function ($event) {
+                    var _this = this;
+                    var resol = this._workerService.calculate(this.val.toString());
+                    resol.then(function (ret) { _this.res = ret; });
+                };
+                Worker.prototype.calculate_factorial2 = function ($event) {
+                    var _this = this;
+                    var resol = this._workerService.calculate2(this.val.toString());
+                    resol.then(function (ret) { _this.res = ret; });
+                };
                 Worker = __decorate([
                     core_1.Component({
                         selector: 'app',
-                        //templateUrl: './web-worker-app.html',
-                        template: '<div>loaded</div>'
+                        templateUrl: './web-worker-app.html'
                     }), 
                     __metadata('design:paramtypes', [worker_service_js_1.WorkerService])
                 ], Worker);

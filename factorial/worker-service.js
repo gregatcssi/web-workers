@@ -42,15 +42,15 @@ System.register(['@angular/core', '@angular/platform-webworker'], function(expor
                         var result = factorial(parseInt(val));
                         return Promise.resolve(result);
                     }
-                    return Promise.resolve('');
+                    return Promise.resolve(0);
                 };
                 WorkerService.prototype.calculate2 = function (val) {
                     if (val) {
                         var result = factorial(parseInt(val));
-                        var val2 = Number.parseInt(result);
-                        return Promise.resolve(val2 * 2);
+                        var val2 = Number.parseInt(result) / 2;
+                        return Promise.resolve(val2);
                     }
-                    return Promise.resolve('');
+                    return Promise.resolve(0);
                 };
                 WorkerService = __decorate([
                     core_1.Injectable(), 
