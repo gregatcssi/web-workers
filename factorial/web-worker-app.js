@@ -1,4 +1,4 @@
-System.register(['@angular/core', './worker-service.js', '@angular/platform-webworker', '@angular/platform-webworker-dynamic', '@angular/forms'], function(exports_1, context_1) {
+System.register(['@angular/core', './worker-service.js', './returned-values.js', '@angular/platform-webworker', '@angular/platform-webworker-dynamic', '@angular/forms'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', './worker-service.js', '@angular/platform-webw
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, worker_service_js_1, core_2, platform_webworker_1, platform_webworker_dynamic_1, forms_1;
+    var core_1, worker_service_js_1, returned_values_js_1, core_2, platform_webworker_1, platform_webworker_dynamic_1, forms_1;
     var FACTORIAL_CHANNEL, Worker, WorkerModule;
     return {
         setters:[
@@ -20,6 +20,9 @@ System.register(['@angular/core', './worker-service.js', '@angular/platform-webw
             },
             function (worker_service_js_1_1) {
                 worker_service_js_1 = worker_service_js_1_1;
+            },
+            function (returned_values_js_1_1) {
+                returned_values_js_1 = returned_values_js_1_1;
             },
             function (platform_webworker_1_1) {
                 platform_webworker_1 = platform_webworker_1_1;
@@ -36,7 +39,11 @@ System.register(['@angular/core', './worker-service.js', '@angular/platform-webw
                 function Worker(_workerService) {
                     this._workerService = _workerService;
                     this.val = 100;
-                    this.leftPosition = this.val.toString() + 'px';
+                    this.originalAmount = 100;
+                    this.originalDollar = 10;
+                    this.currentValue = 100;
+                    this.perc = .0725;
+                    this.years = 500000;
                 }
                 Worker.prototype.calculate_factorial = function ($event) {
                     var _this = this;
@@ -51,6 +58,8 @@ System.register(['@angular/core', './worker-service.js', '@angular/platform-webw
                     }
                     catch (ex) {
                         console.log(ex);
+                        console.log('fact 1');
+                        this.runTest();
                     }
                 };
                 Worker.prototype.calculate_factorial2 = function ($event) {
@@ -66,7 +75,54 @@ System.register(['@angular/core', './worker-service.js', '@angular/platform-webw
                     }
                     catch (ex) {
                         console.log(ex);
+                        console.log('fact 2');
+                        this.runTest();
                     }
+                };
+                Worker.prototype.runTest = function () {
+                    var temp = new returned_values_js_1.ReturnedValues();
+                    temp.originalAmount = this.originalAmount;
+                    temp.originalDollar = this.originalDollar;
+                    temp.currentValue = this.currentValue;
+                    var wefAttack = new returned_values_js_1.ReturnedValues();
+                    wefAttack.originalAmount = 100;
+                    wefAttack.currentValue = 100;
+                    wefAttack.additionalPercent = .15;
+                    var starttime = Date.now();
+                    var orig = 100.00;
+                    for (var i = 0; i < this.years; i++) {
+                        if ((i % 6 === 0) && i >= 3) {
+                            temp = this._workerService.CurrentValuePercentCalculation(temp.currentValue, temp.currentValue, .10, true);
+                            var cont = temp.originalAmount.toString() + ': ' + temp.originalDollar.toString()
+                                + ' : ' + temp.delta.toString() + ' : ' + temp.currentValue.toString() + '   ';
+                        }
+                        if ((i % 12 === 0) && i > 3) {
+                            if (wefAttack.currentValue > 0) {
+                                wefAttack = this._workerService.CurrentValuePercentCalculation(wefAttack.currentValue, temp.currentValue, wefAttack.additionalPercent, false);
+                                wefAttack.additionalPercent = .15;
+                                //console.log('attack');
+                                temp = this._workerService.CurrentValuePercentCalculation(temp.currentValue, temp.currentValue, wefAttack.additionalPercent, false);
+                                var cont = (temp.originalAmount.toString() + ' : ' +
+                                    temp.originalDollar.toString() + ' : ' + temp.delta.toString() + ' : ' + temp.currentValue.toString());
+                                var conw = wefAttack.originalAmount.toString() + ': ' +
+                                    wefAttack.originalDollar.toString() + '  :  ' +
+                                    wefAttack.delta.toString() + ' : ' +
+                                    wefAttack.currentValue.toString() + '  : ' +
+                                    wefAttack.negativeOverFlowAmount.toString();
+                                //console.log();
+                                //console.log('Ass:  ' + cont);
+                                //console.log('WEF:  ' + conw);
+                                if (wefAttack.negativeOverFlowAmount > 0) {
+                                    temp = this._workerService.CurrentValueDollarCalculation(temp.currentValue, wefAttack.negativeOverFlowAmount, true);
+                                }
+                            }
+                        }
+                        temp = this._workerService.CurrentValuePercentCalculation(temp.currentValue, temp.currentValue, this.perc, true);
+                    }
+                    var endtime = Date.now();
+                    console.log(starttime);
+                    console.log(endtime);
+                    console.log('DONE!!!!!!!!!!!');
                 };
                 Worker = __decorate([
                     core_1.Component({
