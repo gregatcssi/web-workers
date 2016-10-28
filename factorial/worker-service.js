@@ -17,6 +17,7 @@ System.register(['@angular/core', '@angular/platform-webworker'], function(expor
             return 1;
         }
         else {
+            //setTimeout(function () {
             return (num * factorial(num - 1));
         }
     }
@@ -47,7 +48,7 @@ System.register(['@angular/core', '@angular/platform-webworker'], function(expor
                 WorkerService.prototype.calculate2 = function (val) {
                     if (val) {
                         var result = factorial(parseInt(val));
-                        var val2 = Number.parseInt(result) / 2;
+                        var val2 = result / 2;
                         return Promise.resolve(val2);
                     }
                     return Promise.resolve(0);

@@ -16,14 +16,25 @@ import { FormsModule } from '@angular/forms';
 class Worker {
   res: number;
   val: number = 100;
+  leftPosition: string = this.val.toString() + 'px';
   constructor(private _workerService: WorkerService) { }
   calculate_factorial($event) {
-    var resol = this._workerService.calculate(this.val.toString());
-    resol.then((ret) => { this.res = ret });
+    try {
+      var resol = this._workerService.calculate(this.val.toString());
+      resol.then((ret) => { if (isFinite(ret)) { this.res = ret } else { this.res = 12345; } });
+    } catch (ex) {
+      console.log(ex);
+
+    }
   }
   calculate_factorial2($event) {
-    var resol = this._workerService.calculate2(this.val.toString());
-    resol.then((ret) => { this.res = ret });
+    try {
+      var resol = this._workerService.calculate2(this.val.toString());
+      resol.then((ret) => { if (isFinite(ret)) { this.res = ret } else { this.res = 12345; } });
+    } catch (ex) {
+      console.log(ex);
+
+    }
   }
 }
 @NgModule({

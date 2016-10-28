@@ -23,19 +23,22 @@ export class WorkerService {
   public calculate2(val: string): Promise<number> {
     if (val) {
       let result = factorial(parseInt(val));
-      var val2 = Number.parseInt(result) / 2;
+      var val2 = result / 2;
       return Promise.resolve(val2);
     }
     return Promise.resolve(0);
   }
 }
 
-function factorial(num) {
+function factorial(num): number {
 
   if (num === 0) {
     return 1;
   }
   else {
+    //setTimeout(function () {
     return (num * factorial(num - 1));
+    // }, 100);
+
   }
 }

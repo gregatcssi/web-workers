@@ -36,16 +36,37 @@ System.register(['@angular/core', './worker-service.js', '@angular/platform-webw
                 function Worker(_workerService) {
                     this._workerService = _workerService;
                     this.val = 100;
+                    this.leftPosition = this.val.toString() + 'px';
                 }
                 Worker.prototype.calculate_factorial = function ($event) {
                     var _this = this;
-                    var resol = this._workerService.calculate(this.val.toString());
-                    resol.then(function (ret) { _this.res = ret; });
+                    try {
+                        var resol = this._workerService.calculate(this.val.toString());
+                        resol.then(function (ret) { if (isFinite(ret)) {
+                            _this.res = ret;
+                        }
+                        else {
+                            _this.res = 12345;
+                        } });
+                    }
+                    catch (ex) {
+                        console.log(ex);
+                    }
                 };
                 Worker.prototype.calculate_factorial2 = function ($event) {
                     var _this = this;
-                    var resol = this._workerService.calculate2(this.val.toString());
-                    resol.then(function (ret) { _this.res = ret; });
+                    try {
+                        var resol = this._workerService.calculate2(this.val.toString());
+                        resol.then(function (ret) { if (isFinite(ret)) {
+                            _this.res = ret;
+                        }
+                        else {
+                            _this.res = 12345;
+                        } });
+                    }
+                    catch (ex) {
+                        console.log(ex);
+                    }
                 };
                 Worker = __decorate([
                     core_1.Component({
