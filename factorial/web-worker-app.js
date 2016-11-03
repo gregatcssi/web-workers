@@ -59,6 +59,7 @@ System.register(['@angular/core', './worker-service.js', './returned-values.js',
                     catch (ex) {
                         console.log(ex);
                         console.log('fact 1');
+                        this.years = this.val;
                         this.runTest();
                     }
                 };
@@ -76,6 +77,7 @@ System.register(['@angular/core', './worker-service.js', './returned-values.js',
                     catch (ex) {
                         console.log(ex);
                         console.log('fact 2');
+                        this.years = this.val;
                         this.runTest();
                     }
                 };

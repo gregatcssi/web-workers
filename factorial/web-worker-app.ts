@@ -30,6 +30,7 @@ class Worker {
     } catch (ex) {
       console.log(ex);
       console.log('fact 1');
+      this.years=this.val;
       this.runTest();
 
     }
@@ -41,6 +42,7 @@ class Worker {
     } catch (ex) {
       console.log(ex);
       console.log('fact 2');
+      this.years=this.val;
       this.runTest();
 
     }
